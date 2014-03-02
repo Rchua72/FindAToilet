@@ -1,0 +1,134 @@
+﻿@model FindAToilet.Models.MyViewModel
+
+@{
+    ViewBag.Title = "Find A Toilet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (@Html.BeginForm("Search", "FindAToilet", FormMethod.Post, new { @class = "form-inline" }))
+{
+    <div class="container">
+        <div>
+            <h2>Find A Toilet</h2>
+            <div class="form-group">
+                    @Html.TextBoxFor(t=>t.searchString, new { @class = "form-control", placeholder = "Please enter a suburb", style = "width: 250px;" })
+            </div>
+            <button type="submit" class="btn btn-default">Search</button> 
+        </div>
+        <input type="hidden" id="jsonFlag" name="jsonFlag" value="@Model.jsonFlag" />
+        <div class="sidebar">
+            @{
+                if (Model.toiletMap != null)
+                {
+                    var grid = new WebGrid(null, canPage:true, rowsPerPage: 5);
+                    grid.Bind(Model.toiletMap,rowCount:Model.totalRecords,autoSortAndPage:false);
+                                    @grid.GetHtml(displayHeader: false,
+                                    columns: grid.Columns(
+                                    grid.Column("Name", format: @<text>@Html.ActionLink((string)@item.Name, "Details", "FindAToilet", new { name = item.Name }, new { onclick="RefreshMap(this)"})</text>)))
+                }
+            }
+        </div>
+        <div class="content">
+            <div id="map-canvas">
+
+            </div>
+        </div>
+    </div>
+
+}
+<script type="text/javascript" src = "https://maps.googleapis.com/maps/api/js?file=api&v=3&key=AIzaSyDlcakn5xrkam8cpurN63eo38Fj2hThePg&sensor=false">
+</script>
+<script type="text/javascript">
+    var map;
+
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: false });
+        getAutoCompleteData();
+        setupMap();
+        var jsonFlag = $('#jsonFlag');
+        if (jsonFlag.val() == "Y") {
+            $.getJSON("/FindAToilet/GetJsonData", function (data) {
+                var mapOptions = {
+                    center: new google.maps.LatLng(data[0].latitude, data[0].longitude),
+                    zoom: 15
+                };
+                map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+                $.each(data, function (index, value) {
+                    if (index != 0) {
+                        var point = new google.maps.LatLng(value.latitude, value.longitude);
+                        var marker = createMarker(point, value.text);
+                        marker.setMap(map);
+                    }
+                });
+
+            })
+        }
+    })
+
+    function setupMap() {
+        var mapOptions = {
+            center: new google.maps.LatLng(-25.66846297, 135.21972656),
+            zoom: 5
+        };
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+    }
+
+    function getAutoCompleteData() {
+        $.get("/FindAToilet/GetAutoCompleteData", function (data) {
+            $('#searchString').autocomplete({
+                source: data,
+                minlength: 5
+            });
+        });
+    }
+
+    function RefreshMap(obj) {
+        event.preventDefault();
+        $.post(obj.href, function (result) {
+            GetDetails(result);
+        }, 'json'
+        );
+    }
+
+    function GetDetails(data) {
+        //debugger;
+        var latitude = data["latitude"];
+        var longitude = data["longitude"];
+        var text = data["text"];
+
+        var myLatLng = new google.maps.LatLng(latitude, longitude);
+        var mapOptions = {
+            zoom: 16,
+            center: myLatLng
+        }
+
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        var point = new google.maps.LatLng(latitude, longitude);
+        var marker = createMarker(point, text);
+        marker.setMap(map);
+        google.maps.event.trigger(marker, 'click');
+    }
+
+    function createMarker(point, html) {
+        var marker = new google.maps.Marker({
+            position: point,
+            map: map,
+            title: html
+        });
+        var infoWindow = new google.maps.InfoWindow({
+            content: html
+        });
+        google.maps.event.addListener(marker, "click", function () {
+            infoWindow.open(map, marker);
+        });
+        //gmarkers.push(marker);
+        return marker;
+    }
+
+
+</script>
+    

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ToiletMapExport" targetNamespace="http://toiletmap.gov.au/" xmlns:mstns="http://toiletmap.gov.au/" xmlns="http://toiletmap.gov.au/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="ToiletMapExport" msdata:IsDataSet="true" msdata:Locale="en-US">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ToiletDetails">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+              <xs:element name="Address1" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+              <xs:element name="Town" type="xs:string" minOccurs="0" msdata:Ordinal="2" />
+              <xs:element name="State" type="xs:string" minOccurs="0" msdata:Ordinal="3" />
+              <xs:element name="Postcode" type="xs:string" minOccurs="0" msdata:Ordinal="4" />
+              <xs:element name="AddressNote" type="xs:string" minOccurs="0" msdata:Ordinal="5" />
+              <xs:element name="Notes" type="xs:string" minOccurs="0" msdata:Ordinal="7" />
+              <xs:element name="GeneralDetails" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Male" type="xs:string" minOccurs="0" />
+                    <xs:element name="Female" type="xs:string" minOccurs="0" />
+                    <xs:element name="Unisex" type="xs:string" minOccurs="0" />
+                    <xs:element name="FacilityType" type="xs:string" minOccurs="0" />
+                    <xs:element name="ToiletType" type="xs:string" minOccurs="0" />
+                    <xs:element name="AccessLimited" type="xs:string" minOccurs="0" />
+                    <xs:element name="PaymentRequired" type="xs:string" minOccurs="0" />
+                    <xs:element name="KeyRequired" type="xs:string" minOccurs="0" />
+                    <xs:element name="AccessNote" type="xs:string" minOccurs="0" />
+                    <xs:element name="Parking" type="xs:string" minOccurs="0" />
+                    <xs:element name="ParkingNote" type="xs:string" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AccessibilityDetails" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="AccessibleMale" type="xs:string" minOccurs="0" />
+                    <xs:element name="AccessibleFemale" type="xs:string" minOccurs="0" />
+                    <xs:element name="AccessibleUnisex" type="xs:string" minOccurs="0" />
+                    <xs:element name="AccessibleNote" type="xs:string" minOccurs="0" />
+                    <xs:element name="MLAK" type="xs:string" minOccurs="0" />
+                    <xs:element name="ParkingAccessible" type="xs:string" minOccurs="0" />
+                    <xs:element name="AccessibleParkingNote" type="xs:string" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="OpeningHours" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="IsOpen" type="xs:string" minOccurs="0" />
+                    <xs:element name="OpeningHoursSchedule" type="xs:string" minOccurs="0" />
+                    <xs:element name="OpeningHoursNote" type="xs:string" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Features" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="BabyChange" type="xs:string" minOccurs="0" />
+                    <xs:element name="Showers" type="xs:string" minOccurs="0" />
+                    <xs:element name="DrinkingWater" type="xs:string" minOccurs="0" />
+                    <xs:element name="SharpsDisposal" type="xs:string" minOccurs="0" />
+                    <xs:element name="SanitaryDisposal" type="xs:string" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Icon" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="IconURL" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                  </xs:sequence>
+                  <xs:attribute name="IconAltText" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Status" form="unqualified" type="xs:string" />
+            <xs:attribute name="Latitude" form="unqualified" type="xs:string" />
+            <xs:attribute name="Longitude" form="unqualified" type="xs:string" />
+            <xs:attribute name="ToiletURL" form="unqualified" type="xs:string" />
+            <xs:attribute name="LastUpdateDate" form="unqualified" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
