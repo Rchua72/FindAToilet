@@ -7,13 +7,13 @@
 
 @using (@Html.BeginForm("Search", "FindAToilet", FormMethod.Post, new { @class = "form-inline" }))
 {
-    <div class="container">
-        <div>
+    <div>
+        <div class="header">
             <h2>Find A Toilet</h2>
-            <div class="form-group">
+            <div>
                     @Html.TextBoxFor(t=>t.searchString, new { @class = "form-control", placeholder = "Please enter a suburb", style = "width: 250px;" })
+                <button type="submit" class="btn btn-default">Search</button> 
             </div>
-            <button type="submit" class="btn btn-default">Search</button> 
         </div>
         <input type="hidden" id="jsonFlag" name="jsonFlag" value="@Model.jsonFlag" />
         <div class="sidebar">
