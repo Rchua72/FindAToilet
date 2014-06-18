@@ -31,15 +31,7 @@ namespace FindAToilet
 
         private void LoadData()
         {
-            CachingManager.PerformXMLDocumentCaching();
-
-            XmlDocument cachedToiletMapXmlDocument = CachingManager.CachedToiletMapXmlDocument;
-
-            var ser = new XmlSerializer(typeof(ToiletMapExport));
-
-            var toiletMapExport = (ToiletMapExport)ser.Deserialize(new XmlNodeReader(cachedToiletMapXmlDocument.DocumentElement));
-
-            Application["ToiletMapExport"] = toiletMapExport;
+            CachingManager.PerformXMLDocumentCaching(Application);
         }
     }
 }

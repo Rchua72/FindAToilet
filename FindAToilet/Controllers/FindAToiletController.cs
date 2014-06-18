@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FindAToilet.Models;
 using System.Collections;
+using FindAToilet.ModuleManagers;
 
 namespace FindAToilet.Controllers
 {
@@ -24,7 +25,7 @@ namespace FindAToilet.Controllers
         {
             const int pageSize = 5;
             int totalRecords = 0;
-            ToiletMapExport tmExport = (ToiletMapExport)this.HttpContext.Application["ToiletMapExport"];
+            ToiletMapExport tmExport = CachingManager.CachedToiletMapExport;
             int skip = page.HasValue ? page.Value - 1  : 1;
 
             model.toiletMap = tmExport.Items.Where(x => x.Town.ToUpper() == model.searchString.ToUpper()).OrderBy(o => o.Town).Skip(skip * pageSize).Take(pageSize);
@@ -44,7 +45,7 @@ namespace FindAToilet.Controllers
             var searchString = (string)Session["searchString"];
             const int pageSize = 5;
             int totalRecords = 0;
-            ToiletMapExport tmExport = (ToiletMapExport)this.HttpContext.Application["ToiletMapExport"];
+            ToiletMapExport tmExport = CachingManager.CachedToiletMapExport;
             int skip = page.HasValue ? page.Value - 1 : 1;
 
             model.toiletMap = tmExport.Items.Where(x => x.Town.ToUpper() == searchString.ToUpper()).OrderBy(o => o.Town).Skip(skip * pageSize).Take(pageSize);
@@ -80,7 +81,7 @@ namespace FindAToilet.Controllers
         [HttpGet]
         public JsonResult GetAutoCompleteData()
         {
-            ToiletMapExport tmExport = (ToiletMapExport)this.HttpContext.Application["ToiletMapExport"];
+            ToiletMapExport tmExport = CachingManager.CachedToiletMapExport;
 
             var list = (from m in tmExport.Items
                        where !string.IsNullOrEmpty(m.Town)
@@ -92,7 +93,7 @@ namespace FindAToilet.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Details(string name)
         {
-            ToiletMapExport tmExport = (ToiletMapExport)this.HttpContext.Application["ToiletMapExport"];
+            ToiletMapExport tmExport = CachingManager.CachedToiletMapExport;
 
             MyViewModel model = new MyViewModel();
 

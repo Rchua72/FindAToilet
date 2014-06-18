@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml;
+using FindAToilet.Models;
+using System.Xml.Serialization;
 
 namespace FindAToilet.ModuleManagers
 {
@@ -10,13 +12,15 @@ namespace FindAToilet.ModuleManagers
     {
 
         private static XmlDocument cachedToiletMapXMLDocument = null;
+        private static HttpApplicationState applicationState = null;
 
         static CachingManager()
         {
         }
 
-        public static void PerformXMLDocumentCaching()
+        public static void PerformXMLDocumentCaching(HttpApplicationState application)
         {
+            applicationState = application;
             CacheToiletMapXmlDocument();
         }
 
@@ -32,6 +36,8 @@ namespace FindAToilet.ModuleManagers
                         cachedToiletMapXMLDocument = new XmlDocument();
                         string toiletMapConfigPath = System.Web.Hosting.HostingEnvironment.MapPath("~/XML/ToiletMapExport.xml");
                         cachedToiletMapXMLDocument.Load(toiletMapConfigPath);
+                        var ser = new XmlSerializer(typeof(ToiletMapExport));
+                        applicationState["ToiletMapExport"] = (ToiletMapExport)ser.Deserialize(new XmlNodeReader(cachedToiletMapXMLDocument.DocumentElement));
                     }
                     catch (Exception ex)
                     {
@@ -41,16 +47,16 @@ namespace FindAToilet.ModuleManagers
             }
         }
 
-        public static XmlDocument CachedToiletMapXmlDocument
+        public static ToiletMapExport CachedToiletMapExport
         {
             get
             {
-                if (cachedToiletMapXMLDocument == null)
+                if (applicationState["ToiletMapExport"] == null)
                 {
                     CacheToiletMapXmlDocument();
                 }
 
-                return cachedToiletMapXMLDocument;
+                return (ToiletMapExport)applicationState["ToiletMapExport"];
             }
         }
     }
